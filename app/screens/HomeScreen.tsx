@@ -11,6 +11,7 @@ import { reorderTasks } from "../store/redux/features/taskSlice";
 import NestedDraggableListScreen from "../components/NestedDraggableListScreen";
 import SwipeableScreen from "../components/SwipeableScreen";
 import StatusTaskList from "../components/StatusTaskList";
+import { BlurView } from "expo-blur";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -18,19 +19,15 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const tasks = useSelector((state) => state.tasks.tasks);
 
-  // Filter tasks into three separate arrays based on their status
   const tasksToDo = tasks.filter((task) => task.status === "to do");
   const tasksInProgress = tasks.filter((task) => task.status === "in progress");
   const tasksDone = tasks.filter((task) => task.status === "done");
 
   const handleDragEnd = (newTasks, status) => {
-    // Dispatch to update the order of tasks
     dispatch(reorderTasks({ tasks: newTasks, status }));
   };
 
   return (
-    // <NestedDraggableListScreen />
-    // <SwipeableScreen />
     <View className='flex-1 p-4 space-x-1'>
       <NestableScrollContainer>
         <StatusTaskList

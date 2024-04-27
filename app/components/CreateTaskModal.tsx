@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal, Alert } fro
 import { useDispatch } from 'react-redux';
 import { addTask } from '../store/redux/features/taskSlice';
 import uuid from 'react-native-uuid';
+import StatusPicker from './StatusPicker';
 
 interface Props {
   modalVisible: boolean;
@@ -61,15 +62,10 @@ const CreateTaskModal: React.FC<Props> = ({ modalVisible, setModalVisible }) => 
               multiline
             />
             <Text className="text-lg font-bold mb-2">Status</Text>
-            {['to do', 'in progress', 'done'].map((s) => (
-              <TouchableOpacity
-                key={s}
-                className={`p-2 rounded mb-4 ${status === s ? 'bg-blue-200' : 'bg-gray-200'}`}
-                onPress={() => setStatus(s)}
-              >
-                <Text>{s.charAt(0).toUpperCase() + s.slice(1)}</Text>
-              </TouchableOpacity>
-            ))}
+            <StatusPicker
+              selectedValue={status}
+              onValueChange={setStatus}
+            />
             <TouchableOpacity
               className="bg-blue-500 p-3 rounded mt-4"
               onPress={handleSaveTask}
