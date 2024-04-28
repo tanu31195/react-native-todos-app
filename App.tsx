@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./app/store/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SCREENS } from "./app/constants";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,9 +17,14 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name='Home' component={HomeScreen} />
-              <Stack.Screen name='Task Details' component={TaskDetailScreen} />
+            <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#d6b7f9'
+              },
+            }}>
+              <Stack.Screen name={SCREENS.HOME.name} component={HomeScreen} />
+              <Stack.Screen name={SCREENS.TASK_DETAILS.name} component={TaskDetailScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </GestureHandlerRootView>

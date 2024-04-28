@@ -24,7 +24,6 @@ const TaskDetailScreen = () => {
   const [title, setTitle] = useState(task?.title);
   const [description, setDescription] = useState(task?.description);
   const [status, setStatus] = useState(task?.status);
-  console.log("🚀 ~ TaskDetailScreen ~ status:", status);
 
   if (!task) {
     return (

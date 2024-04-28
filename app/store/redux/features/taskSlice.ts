@@ -15,7 +15,6 @@ const tasksSlice = createSlice({
   reducers: {
     addTask(state, action: PayloadAction<Task>) {
       state.tasks.push(action.payload);
-      // state.tasks = [];
     },
     updateTask(state, action: PayloadAction<Task>) {
       const index = state.tasks.findIndex(task => task.id === action.payload.id);
@@ -34,9 +33,15 @@ const tasksSlice = createSlice({
       tasks.forEach(task => {
         state.tasks.push({ ...task, status: status });
       });
-    }
+    },
+    markTaskAsDone(state, action: PayloadAction<string>) {
+      const index = state.tasks.findIndex(task => task.id === action.payload);
+      if (index !== -1) {
+        state.tasks[index].status = 'done';
+      }
+    },
   }
 });
 
-export const { addTask, updateTask, reorderTasks, deleteTask } = tasksSlice.actions;
+export const { addTask, updateTask, reorderTasks, deleteTask, markTaskAsDone } = tasksSlice.actions;
 export default tasksSlice.reducer;

@@ -40,7 +40,7 @@ const CreateTaskModal: React.FC<Props> = ({ modalVisible, setModalVisible }) => 
   return (
     <Modal
       animationType="slide"
-      transparent={true}
+      transparent={false}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
     >

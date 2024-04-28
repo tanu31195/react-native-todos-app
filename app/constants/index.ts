@@ -1,10 +1,10 @@
 export const SCREENS = {
 	HOME: {
-		name: "Watchlist",
-		title: "Watchlist",
+		name: "Home",
+		title: "Home",
 	},
-	CHART: {
-		name: "Chart",
-		title: "Chart",
+	TASK_DETAILS: {
+		name: "TaskDetails",
+		title: "Task Details",
 	},
 };

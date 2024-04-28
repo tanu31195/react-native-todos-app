@@ -2,16 +2,10 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import {
-  NestableScrollContainer,
-  NestableDraggableFlatList,
-} from "react-native-draggable-flatlist";
+import { NestableScrollContainer } from "react-native-draggable-flatlist";
 import CreateTaskModal from "../components/CreateTaskModal";
 import { reorderTasks } from "../store/redux/features/taskSlice";
-import NestedDraggableListScreen from "../components/NestedDraggableListScreen";
-import SwipeableScreen from "../components/SwipeableScreen";
 import StatusTaskList from "../components/StatusTaskList";
-import { BlurView } from "expo-blur";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
