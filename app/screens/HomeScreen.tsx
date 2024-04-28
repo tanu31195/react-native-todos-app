@@ -16,11 +16,15 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const tasks = useSelector((state) => state.tasks.tasks);
 
-  const tasksToDo = tasks.filter((task) => task.status === STATUSES.TO_DO.CODE);
-  const tasksInProgress = tasks.filter(
-    (task) => task.status === STATUSES.IN_PROGRESS.CODE
+  const tasksToDo = tasks.filter(
+    (task: Task) => task.status === STATUSES.TO_DO.CODE
   );
-  const tasksDone = tasks.filter((task) => task.status === STATUSES.DONE.CODE);
+  const tasksInProgress = tasks.filter(
+    (task: Task) => task.status === STATUSES.IN_PROGRESS.CODE
+  );
+  const tasksDone = tasks.filter(
+    (task: Task) => task.status === STATUSES.DONE.CODE
+  );
 
   const handleDragEnd = (newTasks: Task[], status: string) => {
     dispatch(reorderTasks({ tasks: newTasks, status }));
@@ -49,7 +53,7 @@ const HomeScreen = () => {
         />
       </NestableScrollContainer>
       <TouchableOpacity
-        className='p-5 bg-purple-500 rounded-full absolute bottom-8 right-8'
+        className='p-5 bg-purple-500 rounded-full absolute bottom-14 right-12'
         onPress={() => setModalVisible(true)}
       >
         <Text className='text-white text-center text-lg font-bold'>+</Text>
