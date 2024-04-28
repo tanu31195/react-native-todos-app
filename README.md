@@ -1,11 +1,12 @@
 # Setup
 
-After checking out run
+Clone repo
+`git clone https://github.com/tanu31195/react-native-todos-app.git`
 
+After checking out run,
 `npm install`
 
-Then start expo using
-
+Then start expo,
 `npx expo start --clear`
 
 ## Summary
