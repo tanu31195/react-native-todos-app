@@ -1,47 +1,74 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Task } from '../../../types/common';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Task } from "../../../types/common";
+import { STATUSES } from "../../../constants";
 
 interface TasksState {
   tasks: Task[];
 }
 
 const initialState: TasksState = {
-  tasks: []
+  tasks: [],
 };
 
 const tasksSlice = createSlice({
-  name: 'tasks',
+  name: "tasks",
   initialState,
   reducers: {
     addTask(state, action: PayloadAction<Task>) {
       state.tasks.push(action.payload);
     },
     updateTask(state, action: PayloadAction<Task>) {
-      const index = state.tasks.findIndex(task => task.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (task) => task.id === action.payload.id
+      );
       if (index !== -1) {
         state.tasks[index] = action.payload;
       }
     },
     deleteTask(state, action: PayloadAction<string>) {
-      state.tasks = state.tasks.filter(task => task.id !== action.payload);
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
     },
-    reorderTasks(state, action: PayloadAction<{tasks: Task[], status: string}>) {
+    reorderTasks(
+      state,
+      action: PayloadAction<{ tasks: Task[]; status: string }>
+    ) {
       const { tasks, status } = action.payload;
       // Filter out the tasks of the specified status
-      state.tasks = state.tasks.filter(task => task.status !== status);
+      state.tasks = state.tasks.filter((task) => task.status !== status);
       // Add the new ordered tasks with updated 'order' fields
-      tasks.forEach(task => {
+      tasks.forEach((task) => {
         state.tasks.push({ ...task, status: status });
       });
     },
     markTaskAsDone(state, action: PayloadAction<string>) {
-      const index = state.tasks.findIndex(task => task.id === action.payload);
+      const index = state.tasks.findIndex((task) => task.id === action.payload);
       if (index !== -1) {
-        state.tasks[index].status = 'done';
+        state.tasks[index].status = STATUSES.DONE.CODE;
       }
     },
-  }
+    markTaskAsInProgress(state, action: PayloadAction<string>) {
+      const index = state.tasks.findIndex((task) => task.id === action.payload);
+      if (index !== -1) {
+        state.tasks[index].status = STATUSES.IN_PROGRESS.CODE;
+      }
+    },
+    markTaskAsToDo(state, action: PayloadAction<string>) {
+      const index = state.tasks.findIndex((task) => task.id === action.payload);
+      if (index !== -1) {
+        state.tasks[index].status = STATUSES.TO_DO.CODE;
+      }
+    },
+  },
 });
 
-export const { addTask, updateTask, reorderTasks, deleteTask, markTaskAsDone } = tasksSlice.actions;
+export const {
+  addTask,
+  updateTask,
+  reorderTasks,
+  deleteTask,
+  markTaskAsDone,
+  markTaskAsInProgress,
+  markTaskAsToDo,
+} = tasksSlice.actions;
+
 export default tasksSlice.reducer;

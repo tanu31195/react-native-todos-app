@@ -17,9 +17,14 @@ import SwipeableItem, {
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
-import { deleteTask, markTaskAsDone } from "../store/redux/features/taskSlice";
+import {
+  deleteTask,
+  markTaskAsDone,
+  markTaskAsInProgress,
+  markTaskAsToDo,
+} from "../store/redux/features/taskSlice";
 import { Task } from "../types/common";
-import { SCREENS } from "../constants";
+import { SCREENS, STATUSES } from "../constants";
 
 const OVERSWIPE_DIST = 20;
 
@@ -50,7 +55,10 @@ const StatusTaskList = ({
 
   const onPressLeft = (taskId: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-    dispatch(markTaskAsDone(taskId));
+    if (status === STATUSES.TO_DO.CODE) dispatch(markTaskAsInProgress(taskId));
+    else if (status === STATUSES.IN_PROGRESS.CODE)
+      dispatch(markTaskAsDone(taskId));
+    else if (status === STATUSES.DONE.CODE) dispatch(markTaskAsToDo(taskId));
   };
 
   const onPressRight = (taskId: string) => {
@@ -86,7 +94,11 @@ const StatusTaskList = ({
           }}
           overSwipe={OVERSWIPE_DIST}
           renderUnderlayLeft={() => (
-            <UnderlayLeft onPressLeft={onPressLeft} taskId={item.id} />
+            <UnderlayLeft
+              onPressLeft={onPressLeft}
+              taskId={item.id}
+              status={status}
+            />
           )}
           renderUnderlayRight={() => (
             <UnderlayRight onPressRight={onPressRight} taskId={item.id} />
@@ -99,7 +111,18 @@ const StatusTaskList = ({
               activeOpacity={1}
               onLongPress={drag}
               disabled={isActive}
-              style={[styles.row]}
+              style={[
+                styles.row,
+                {
+                  borderLeftWidth: 9,
+                  borderColor:
+                    status === STATUSES.DONE.CODE
+                      ? STATUSES.DONE.COLOR
+                      : status === STATUSES.TO_DO.CODE
+                      ? STATUSES.TO_DO.COLOR
+                      : STATUSES.IN_PROGRESS.COLOR,
+                },
+              ]}
             >
               <Text style={styles.text}>{item.title}</Text>
             </TouchableOpacity>
@@ -116,11 +139,12 @@ const StatusTaskList = ({
           <Text style={styles.headerText}>
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </Text>
-          {isVisible ? (
-            <Ionicons name='caret-up' size={24} color='black' />
-          ) : (
-            <Ionicons name='caret-down' size={24} color='black' />
-          )}
+
+          <Ionicons
+            name={isVisible ? "caret-up" : "caret-down"}
+            size={24}
+            color='#8927f6'
+          />
         </View>
       </TouchableOpacity>
       {isVisible && (
@@ -143,18 +167,43 @@ export default StatusTaskList;
 type UnderlayLeftProps = {
   onPressLeft: (taskId: string) => void;
   taskId: string;
+  status: string;
 };
 
-const UnderlayLeft = ({ onPressLeft, taskId }: UnderlayLeftProps) => {
+const UnderlayLeft = ({ onPressLeft, taskId, status }: UnderlayLeftProps) => {
   const { percentOpen } = useSwipeableItemParams();
   const animStyle = useAnimatedStyle(() => ({
     opacity: percentOpen.value,
   }));
 
   return (
-    <Animated.View style={[styles.row, styles.underlayLeft, animStyle]}>
+    <Animated.View
+      style={[
+        styles.row,
+        styles.underlayLeft,
+        animStyle,
+        {
+          backgroundColor:
+            status === STATUSES.DONE.CODE
+              ? STATUSES.TO_DO.COLOR
+              : status === STATUSES.TO_DO.CODE
+              ? STATUSES.IN_PROGRESS.COLOR
+              : STATUSES.DONE.COLOR,
+        },
+      ]}
+    >
       <TouchableOpacity onPress={() => onPressLeft(taskId)}>
-        <Ionicons name='checkmark-done' size={24} color='black' />
+        <Ionicons
+          name={
+            status === STATUSES.IN_PROGRESS.CODE
+              ? "checkmark-done"
+              : status === STATUSES.TO_DO.CODE
+              ? "timer-outline"
+              : "refresh"
+          }
+          size={21}
+          color='black'
+        />
       </TouchableOpacity>
     </Animated.View>
   );
@@ -189,6 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "white",
     marginVertical: 5,
+    borderWidth: 1,
   },
   text: {
     fontWeight: "bold",
@@ -216,10 +266,9 @@ const styles = StyleSheet.create({
   underlayRight: {
     backgroundColor: "tomato",
     justifyContent: "flex-start",
-    width: 50,
+    width: 100,
   },
   underlayLeft: {
-    backgroundColor: "#af6df9",
     justifyContent: "flex-end",
   },
 });

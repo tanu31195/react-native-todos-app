@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { NestableScrollContainer } from "react-native-draggable-flatlist";
-import CreateTaskModal from "../components/CreateTaskModal";
+import CreateTaskModal from "../components/ui/CreateTaskModal";
 import { reorderTasks } from "../store/redux/features/taskSlice";
 import StatusTaskList from "../components/StatusTaskList";
+import { STATUSES } from "../constants";
+import { Task } from "../types/common";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -13,11 +15,13 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const tasks = useSelector((state) => state.tasks.tasks);
 
-  const tasksToDo = tasks.filter((task) => task.status === "to do");
-  const tasksInProgress = tasks.filter((task) => task.status === "in progress");
-  const tasksDone = tasks.filter((task) => task.status === "done");
+  const tasksToDo = tasks.filter((task) => task.status === STATUSES.TO_DO.CODE);
+  const tasksInProgress = tasks.filter(
+    (task) => task.status === STATUSES.IN_PROGRESS.CODE
+  );
+  const tasksDone = tasks.filter((task) => task.status === STATUSES.DONE.CODE);
 
-  const handleDragEnd = (newTasks, status) => {
+  const handleDragEnd = (newTasks: Task[], status: string) => {
     dispatch(reorderTasks({ tasks: newTasks, status }));
   };
 
@@ -26,19 +30,19 @@ const HomeScreen = () => {
       <NestableScrollContainer>
         <StatusTaskList
           tasks={tasksToDo}
-          status='to do'
+          status={STATUSES.TO_DO.CODE}
           handleDragEnd={handleDragEnd}
           navigation={navigation}
         />
         <StatusTaskList
           tasks={tasksInProgress}
-          status='in progress'
+          status={STATUSES.IN_PROGRESS.CODE}
           handleDragEnd={handleDragEnd}
           navigation={navigation}
         />
         <StatusTaskList
           tasks={tasksDone}
-          status='done'
+          status={STATUSES.DONE.CODE}
           handleDragEnd={handleDragEnd}
           navigation={navigation}
         />
