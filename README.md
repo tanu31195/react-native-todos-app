@@ -30,8 +30,8 @@ I successfully implemented a feature-rich to-do list application tailored to the
 
 ### Areas for future enhancement
 
-- Code Refinement: There is potential to simplify and refactor the StatusTaskList component for enhanced maintainability and performance.
-- UI Components: Developing a common component library for UI elements such as buttons could streamline development and ensure consistency across the app.
-- Theming and Accessibility: Implementing theming options and enhancing accessibility features will make the app more versatile and user-friendly.
-- Code Optimization: Some duplicated code has been identified that can be consolidated to reduce complexity and improve efficiency.
+- **Code Refinement**: There is potential to simplify and refactor the StatusTaskList component for enhanced maintainability and performance.
+- **UI Components**: Developing a common component library for UI elements such as buttons could streamline development and ensure consistency across the app.
+- **Theming and Accessibility**: Implementing theming options and enhancing accessibility features will make the app more versatile and user-friendly.
+- **Code Optimization**: Some duplicated code has been identified that can be consolidated to reduce complexity and improve efficiency.
 - The application has been primarily tested on iOS, ensuring reliability and responsiveness on this platform.
