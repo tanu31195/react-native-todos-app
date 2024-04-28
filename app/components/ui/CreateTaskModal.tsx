@@ -53,7 +53,7 @@ const CreateTaskModal = ({
   return (
     <Modal
       animationType='slide'
-      transparent={false}
+      transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
     >

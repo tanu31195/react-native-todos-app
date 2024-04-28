@@ -8,6 +8,7 @@ import { reorderTasks } from "../store/redux/features/taskSlice";
 import StatusTaskList from "../components/StatusTaskList";
 import { STATUSES } from "../constants";
 import { Task } from "../types/common";
+import { BlurView } from "expo-blur";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -54,10 +55,12 @@ const HomeScreen = () => {
         <Text className='text-white text-center text-lg font-bold'>+</Text>
       </TouchableOpacity>
       {modalVisible && (
-        <CreateTaskModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
+        <BlurView intensity={5} style={{ height: "100%", width: "100%" }}>
+          <CreateTaskModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        </BlurView>
       )}
     </View>
   );

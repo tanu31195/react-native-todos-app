@@ -16,6 +16,7 @@ import SwipeableItem, {
 } from "react-native-swipeable-item";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import * as Haptics from "expo-haptics";
 import { useDispatch } from "react-redux";
 import {
   deleteTask,
@@ -59,11 +60,15 @@ const StatusTaskList = ({
     else if (status === STATUSES.IN_PROGRESS.CODE)
       dispatch(markTaskAsDone(taskId));
     else if (status === STATUSES.DONE.CODE) dispatch(markTaskAsToDo(taskId));
+
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
 
   const onPressRight = (taskId: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     dispatch(deleteTask(taskId));
+
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
   };
 
   const renderItem = ({ item, drag, isActive }: RenderItemProps) => {
@@ -156,6 +161,9 @@ const StatusTaskList = ({
             <Text style={styles.listEmptyText}>No {status} tasks</Text>
           }
           renderItem={renderItem}
+          onPlaceholderIndexChange={() =>
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+          }
         />
       )}
     </View>
